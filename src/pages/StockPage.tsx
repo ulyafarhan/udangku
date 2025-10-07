@@ -10,9 +10,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogC
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { DatePicker } from "@/components/ui/date-picker";
-import { Plus, MoreVertical, Edit, Trash2, Package, TrendingUp, TrendingDown } from "lucide-react";
-import { db } from "@/db";
-import { useLiveQuery } from "dexie-react-hooks";
+import { Plus, MoreVertical, Edit, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { StockEntry, OperationalCost } from "@/types";
 import { useStock } from "@/hooks/useStock";
@@ -34,8 +32,6 @@ const costSchema = z.object({
 });
 
 const formatCurrency = (amount: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
-
-// --- FORM COMPONENTS ---
 
 const StockForm = ({ entry, onSuccess }: { entry?: StockEntry; onSuccess: () => void; }) => {
   const { addStockEntry, updateStockEntry } = useStock();
@@ -135,8 +131,6 @@ const CostForm = ({ cost, onSuccess }: { cost?: OperationalCost; onSuccess: () =
   );
 }
 
-// --- MAIN PAGE COMPONENT ---
-
 export function StockPage() {
   const { stockEntries, stockData, deleteStockEntry } = useStock();
   const { costs, deleteCost } = useOperationalCosts();
@@ -156,15 +150,7 @@ export function StockPage() {
         </div>
       </div>
 
-      {/* Stock Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card><CardHeader><CardTitle>Stok Tersedia</CardTitle></CardHeader><CardContent className="text-2xl font-bold">{stockData.currentStock.toFixed(1)} kg</CardContent></Card>
-        <Card><CardHeader><CardTitle>Total Dibeli</CardTitle></CardHeader><CardContent className="text-2xl font-bold">{stockData.totalPurchased.toFixed(1)} kg</CardContent></Card>
-        <Card><CardHeader><CardTitle>Total Terjual</CardTitle></CardHeader><CardContent className="text-2xl font-bold">{stockData.totalSold.toFixed(1)} kg</CardContent></Card>
-      </div>
-      
-      {/* History Lists */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader><CardTitle>Riwayat Stok Masuk</CardTitle></CardHeader>
           <CardContent className="space-y-2">
@@ -221,7 +207,6 @@ export function StockPage() {
         </Card>
       </div>
 
-      {/* Dialogs and Alerts */}
       <Dialog open={dialogOpen.type !== null} onOpenChange={() => closeDialog()}>
         <DialogContent>
             {dialogOpen.type === 'stock' && <StockForm entry={dialogOpen.data} onSuccess={closeDialog} />}

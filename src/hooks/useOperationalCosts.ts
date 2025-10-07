@@ -3,7 +3,7 @@ import { db } from '@/db';
 import { OperationalCost } from '@/types';
 
 export function useOperationalCosts() {
-  const costs = useLiveQuery(() => db.operationalCosts.orderBy('date').toArray(), []);
+  const costs = useLiveQuery(() => db.operationalCosts.orderBy('date').reverse().toArray(), []);
 
   const addCost = async (data: Omit<OperationalCost, 'id' | 'createdAt'>) => {
     await db.operationalCosts.add({
@@ -12,7 +12,13 @@ export function useOperationalCosts() {
     });
   };
 
-  // ... (fungsi update & delete akan kita tambahkan nanti)
+  const updateCost = async (id: number, data: Partial<OperationalCost>) => {
+    await db.operationalCosts.update(id, data);
+  };
 
-  return { costs: costs || [] };
+  const deleteCost = async (id: number) => {
+    await db.operationalCosts.delete(id);
+  };
+
+  return { costs: costs || [], addCost, updateCost, deleteCost };
 }

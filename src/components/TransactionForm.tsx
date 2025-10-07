@@ -62,8 +62,9 @@ export const TransactionForm = ({ onSuccess }: { onSuccess: () => void; }) => {
             return;
         }
 
+        const finalPaidAmount = values.paymentMethod === 'tunai' ? totalAmount : values.paidAmount;
+
         try {
-            const finalPaidAmount = values.paymentMethod === 'tunai' ? totalAmount : values.paidAmount;
             await addTransaction({
                 ...values,
                 date: format(values.date, "yyyy-MM-dd"),
@@ -71,12 +72,8 @@ export const TransactionForm = ({ onSuccess }: { onSuccess: () => void; }) => {
                 paidAmount: finalPaidAmount,
             });
             onSuccess();
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError(error.message);
-            } else {
-                setError("Terjadi kesalahan tidak dikenal.");
-            }
+        } catch (e: any) {
+            setError(e.message);
         }
     };
 

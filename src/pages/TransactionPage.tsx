@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Search, Plus, MoreVertical, Trash2 } from "lucide-react";
 import { useTransactions } from "@/hooks/useTransactions";
-import { TransactionForm } from "@/components/TransactionForm"; // Kita akan buat ini selanjutnya
+import { TransactionForm } from "@/components/TransactionForm";
 import { Transaction } from "@/types";
 
 const formatCurrency = (amount: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);

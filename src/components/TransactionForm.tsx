@@ -9,7 +9,7 @@ import { DialogHeader, DialogTitle, DialogFooter, DialogClose } from "@/componen
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
-import { DatePicker } from "./ui/date-picker";
+import { DatePicker } from "@/components/ui/date-picker"; // <--- INI PERBAIKANNYA
 import { useTransactions } from "@/hooks/useTransactions";
 import { useStock } from "@/hooks/useStock";
 import { format } from "date-fns";
@@ -62,9 +62,8 @@ export const TransactionForm = ({ onSuccess }: { onSuccess: () => void; }) => {
             return;
         }
 
-        const finalPaidAmount = values.paymentMethod === 'tunai' ? totalAmount : values.paidAmount || 0;
-
         try {
+            const finalPaidAmount = values.paymentMethod === 'tunai' ? totalAmount : values.paidAmount;
             await addTransaction({
                 ...values,
                 date: format(values.date, "yyyy-MM-dd"),
@@ -72,8 +71,12 @@ export const TransactionForm = ({ onSuccess }: { onSuccess: () => void; }) => {
                 paidAmount: finalPaidAmount,
             });
             onSuccess();
-        } catch (e: any) {
-            setError(e.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Terjadi kesalahan tidak dikenal.");
+            }
         }
     };
 

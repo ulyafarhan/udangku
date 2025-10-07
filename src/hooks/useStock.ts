@@ -1,13 +1,12 @@
+import React from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/db';
 import { StockEntry, Transaction } from '@/types';
 
 export function useStock() {
-  // Mengambil data stok & transaksi secara real-time dari database
-  const stockEntries = useLiveQuery(() => db.stockEntries.orderBy('date').toArray(), []);
+  const stockEntries = useLiveQuery(() => db.stockEntries.orderBy('date').reverse().toArray(), []);
   const transactions = useLiveQuery(() => db.transactions.toArray(), []);
 
-  // Menghitung data agregat stok
   const stockData = React.useMemo(() => {
     if (!stockEntries || !transactions) {
       return { currentStock: 0, totalPurchased: 0, totalSold: 0 };
@@ -18,7 +17,6 @@ export function useStock() {
     return { currentStock, totalPurchased, totalSold };
   }, [stockEntries, transactions]);
 
-  // Fungsi untuk menambah entri stok baru
   const addStockEntry = async (data: Omit<StockEntry, 'id' | 'netWeight' | 'totalCost'>) => {
     const netWeight = data.grossWeight * (1 - data.shrinkagePercentage / 100);
     const totalCost = data.grossWeight * data.buyPrice;
@@ -29,7 +27,19 @@ export function useStock() {
     });
   };
 
-  // ... (fungsi update & delete akan kita tambahkan nanti saat dibutuhkan)
+  const updateStockEntry = async (id: number, data: Omit<StockEntry, 'id' | 'netWeight' | 'totalCost'>) => {
+    const netWeight = data.grossWeight * (1 - data.shrinkagePercentage / 100);
+    const totalCost = data.grossWeight * data.buyPrice;
+    await db.stockEntries.update(id, {
+      ...data,
+      netWeight,
+      totalCost,
+    });
+  };
 
-  return { stockEntries: stockEntries || [], stockData };
+  const deleteStockEntry = async (id: number) => {
+    await db.stockEntries.delete(id);
+  };
+
+  return { stockEntries: stockEntries || [], stockData, addStockEntry, updateStockEntry, deleteStockEntry };
 }

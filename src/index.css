@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 205 50% 98%;
+    --foreground: 207 100% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 207 100% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 207 100% 8%;
+    --primary: 200 100% 40%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 195 100% 60%;
+    --secondary: 180 50% 85%;
+    --secondary-foreground: 207 100% 15%;
+    --muted: 195 30% 92%;
+    --muted-foreground: 207 50% 45%;
+    --accent: 175 70% 50%;
+    --accent-foreground: 0 0% 100%;
+    --success: 145 70% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 85% 55%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 195 30% 88%;
+    --input: 195 30% 92%;
+    --ring: 200 100% 40%;
+    --radius: 0.8rem;
+    --ocean-gradient: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --surface-gradient: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    --card-gradient: linear-gradient(145deg, hsl(0 0% 100%), hsl(var(--muted)));
+    --shadow-soft: 0 4px 20px -5px hsl(var(--primary) / 0.15);
+    --shadow-medium: 0 8px 30px -8px hsl(var(--primary) / 0.25);
+    --shadow-strong: 0 15px 40px -10px hsl(var(--primary) / 0.35);
+  }
+
+  .dark {
+    --background: 207 100% 6%;
+    --foreground: 195 30% 95%;
+    --card: 207 50% 10%;
+    --card-foreground: 195 30% 95%;
+    --popover: 207 50% 10%;
+    --popover-foreground: 195 30% 95%;
+    --primary: 195 100% 60%;
+    --primary-foreground: 207 100% 8%;
+    --primary-glow: 180 100% 70%;
+    --secondary: 207 30% 20%;
+    --secondary-foreground: 195 30% 85%;
+    --muted: 207 30% 15%;
+    --muted-foreground: 195 20% 65%;
+    --accent: 175 70% 40%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 207 30% 20%;
+    --input: 207 30% 15%;
+    --ring: 195 100% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-surface-gradient text-foreground;
+    min-height: 100vh;
+  }
+}

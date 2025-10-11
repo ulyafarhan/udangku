@@ -1,0 +1,39 @@
+{
+  "name": "UdangKu - Manajemen Tambak Udang",
+  "short_name": "UdangKu",
+  "description": "Aplikasi manajemen tambak udang untuk pembudidaya Indonesia",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "id-ID",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Transaksi Baru",
+      "short_name": "Transaksi",
+      "description": "Buat transaksi penjualan baru",
+      "url": "/#/transactions",
+      "icons": [{ "src": "/transaction-icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Laporan Harian",
+      "short_name": "Laporan",
+      "description": "Lihat laporan harian",
+      "url": "/#/reports",
+      "icons": [{ "src": "/report-icon.png", "sizes": "96x96" }]
+    }
+  ]
+}

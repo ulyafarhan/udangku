@@ -1,7 +1,3 @@
-// src/pages/ReportsPage.tsx
-// Untuk saat ini, kita akan membuat halaman placeholder sederhana.
-// Fungsionalitas filter tanggal dan ekspor akan ditambahkan di modul selanjutnya.
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ReportsPage() {

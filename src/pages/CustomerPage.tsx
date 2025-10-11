@@ -113,7 +113,7 @@ const CustomerCard = ({ customer }: { customer: Customer }) => {
                     <AlertDialogHeader><AlertDialogTitle>Anda yakin?</AlertDialogTitle><AlertDialogDescription>Tindakan ini akan menghapus data pelanggan secara permanen.</AlertDialogDescription></AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Batal</AlertDialogCancel>
-                        <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={() => customer.id && deleteCustomer(customer.id)}>Hapus</AlertDialogAction>
+                        <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={() => customer?.id && deleteCustomer(customer.id)}>Hapus</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

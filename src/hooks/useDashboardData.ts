@@ -45,14 +45,18 @@ export function useDashboardData() {
     const totalDebt = transactions.reduce((sum, t) => sum + t.remainingDebt, 0);
 
     const recentTransactions = transactions
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort((a, b) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      })
       .slice(0, 3) // Ambil 3 transaksi terbaru
       .map(t => ({
         id: t.id,
-        customer: t.customerName,
-        amount: `Rp ${t.totalAmount.toLocaleString('id-ID')}`,
-        status: t.status.charAt(0).toUpperCase() + t.status.slice(1),
-        time: new Date(t.createdAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+        customer: t.customerName || 'Unknown',
+        amount: `Rp ${t.totalAmount?.toLocaleString('id-ID') || '0'}`,
+        status: t.status?.charAt(0).toUpperCase() + t.status?.slice(1) || 'Unknown',
+        time: t.createdAt ? new Date(t.createdAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : 'Unknown'
       }));
 
     return {

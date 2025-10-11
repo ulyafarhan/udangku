@@ -10,6 +10,12 @@ export function useSettings() {
   const updateSettings = async (newSettings: Partial<Settings>) => {
     if (settings?.id) {
       await db.settings.update(settings.id, newSettings);
+    } else {
+      // Jika belum ada settings, buat yang baru
+      await db.settings.add({
+        ...newSettings,
+        createdAt: new Date().toISOString(),
+      } as Settings);
     }
   };
 

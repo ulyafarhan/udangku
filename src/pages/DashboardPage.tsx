@@ -4,7 +4,6 @@ import { DollarSign, TrendingUp, TrendingDown, Package, Users } from "lucide-rea
 import { useDashboardData } from "@/hooks/useDashboardData";
 
 const formatCurrency = (amount: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
-
 const MetricCard = ({ title, value, icon: Icon, change, changeType }: any) => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -21,7 +20,8 @@ const MetricCard = ({ title, value, icon: Icon, change, changeType }: any) => (
 export function DashboardPage() {
     const { todayRevenue, todayExpenses, todayProfit, currentStock, totalCustomers, totalDebt, recentTransactions } = useDashboardData();
 
-    const getStatusClass = (status: string) => {
+    const getStatusClass = (status?: string) => {
+        if (!status) return 'bg-muted';
         switch (status.toLowerCase()) {
             case 'lunas': return 'bg-success/10 text-success';
             case 'utang': return 'bg-warning/10 text-warning';

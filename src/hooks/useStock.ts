@@ -18,8 +18,8 @@ export function useStock() {
   }, [stockEntries, transactions]);
 
   const addStockEntry = async (data: Omit<StockEntry, 'id' | 'netWeight' | 'totalCost'>) => {
-    const netWeight = data.grossWeight * (1 - data.shrinkagePercentage / 100);
-    const totalCost = data.grossWeight * data.buyPrice;
+    const netWeight = Math.round(data.grossWeight * (1 - data.shrinkagePercentage / 100));
+    const totalCost = Math.round(data.grossWeight * data.buyPrice);
     await db.stockEntries.add({
       ...data,
       netWeight,
@@ -28,8 +28,8 @@ export function useStock() {
   };
 
   const updateStockEntry = async (id: number, data: Omit<StockEntry, 'id' | 'netWeight' | 'totalCost'>) => {
-    const netWeight = data.grossWeight * (1 - data.shrinkagePercentage / 100);
-    const totalCost = data.grossWeight * data.buyPrice;
+    const netWeight = Math.round(data.grossWeight * (1 - data.shrinkagePercentage / 100));
+    const totalCost = Math.round(data.grossWeight * data.buyPrice);
     await db.stockEntries.update(id, {
       ...data,
       netWeight,

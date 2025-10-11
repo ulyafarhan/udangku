@@ -1,17 +1,12 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/db';
 import { Transaction } from '@/types';
-import { useStock } from './useStock';
 
 export function useTransactions() {
-  const { stockEntries } = useStock(); // Gunakan hook stok untuk re-kalkulasi
   const transactions = useLiveQuery(() => db.transactions.orderBy('date').reverse().toArray(), []);
 
   const addTransaction = async (data: Omit<Transaction, 'id' | 'createdAt' | 'remainingDebt' | 'status'>) => {
-    // Cari pelanggan berdasarkan nama (case-insensitive)
     let customer = await db.customers.where('name').equalsIgnoreCase(data.customerName).first();
-
-    // Jika pelanggan tidak ditemukan, buat baru
     if (!customer) {
       const newCustomerId = await db.customers.add({
         name: data.customerName,
@@ -24,9 +19,8 @@ export function useTransactions() {
         throw new Error("Gagal membuat atau menemukan pelanggan.");
     }
 
-    // Kalkulasi sisa utang dan status
     const remainingDebt = data.totalAmount - data.paidAmount;
-    const status = remainingDebt <= 0 ? 'lunas' : data.paymentMethod === 'utang' ? 'utang' : 'cicil';
+    const status = remainingDebt <= 0 ? 'lunas' : remainingDebt > 0 && data.paidAmount > 0 ? 'cicil' : 'utang';
 
     await db.transactions.add({
       ...data,
@@ -38,13 +32,19 @@ export function useTransactions() {
   };
 
   const deleteTransaction = async (id: number) => {
+    // Tidak ada logika pengembalian stok di sini karena
+    // stockData di useStock akan otomatis menghitung ulang berdasarkan
+    // daftar transaksi yang ada. Cukup hapus transaksinya.
     await db.transactions.delete(id);
   };
   
-  // Fungsi ini bisa dikembangkan lebih lanjut jika diperlukan
   const updateTransaction = async (id: number, data: Partial<Transaction>) => {
       await db.transactions.update(id, data);
   }
 
-  return { transactions: transactions || [], addTransaction, deleteTransaction, updateTransaction };
+  const getTransactionsByDateRange = (startDate: string, endDate: string) => {
+    return transactions?.filter(t => t.date >= startDate && t.date <= endDate) || [];
+  }
+
+  return { transactions: transactions || [], addTransaction, deleteTransaction, updateTransaction, getTransactionsByDateRange };
 }

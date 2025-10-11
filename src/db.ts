@@ -15,7 +15,7 @@ export class UdangKuDB extends Dexie {
       transactions: '++id, customerId, date, createdAt',
       stockEntries: '++id, date, createdAt',
       operationalCosts: '++id, date, createdAt',
-      settings: 'id',
+      settings: '++id', // Auto-increment untuk id settings
     });
   }
 }

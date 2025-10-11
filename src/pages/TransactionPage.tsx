@@ -60,7 +60,7 @@ const TransactionCard = ({ transaction }: { transaction: Transaction }) => {
                     <AlertDialogHeader><AlertDialogTitle>Anda yakin?</AlertDialogTitle><AlertDialogDescription>Tindakan ini akan menghapus data transaksi ini secara permanen.</AlertDialogDescription></AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Batal</AlertDialogCancel>
-                        <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={() => transaction.id && deleteTransaction(transaction.id)}>Hapus</AlertDialogAction>
+                        <AlertDialogAction className="bg-destructive hover:bg-destructive/90" onClick={() => transaction?.id && deleteTransaction(transaction.id)}>Hapus</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

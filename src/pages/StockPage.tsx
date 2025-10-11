@@ -170,7 +170,7 @@ export function StockPage() {
                       <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => setDialogOpen({ type: 'stock', data: entry })}> <Edit className="mr-2 h-4 w-4" />Ubah</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setAlertOpen({ type: 'stock', id: entry.id })} className="text-destructive"><Trash2 className="mr-2 h-4 w-4" />Hapus</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => entry?.id && setAlertOpen({ type: 'stock', id: entry.id })} className="text-destructive"><Trash2 className="mr-2 h-4 w-4" />Hapus</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
@@ -196,7 +196,7 @@ export function StockPage() {
                       <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => setDialogOpen({ type: 'cost', data: cost })}><Edit className="mr-2 h-4 w-4" />Ubah</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setAlertOpen({ type: 'cost', id: cost.id })} className="text-destructive"><Trash2 className="mr-2 h-4 w-4" />Hapus</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => cost?.id && setAlertOpen({ type: 'cost', id: cost.id })} className="text-destructive"><Trash2 className="mr-2 h-4 w-4" />Hapus</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>

@@ -41,9 +41,9 @@ export function useCustomers() {
 
     if (!transactions) return { totalTransactions: 0, totalDebt: 0, totalSpent: 0 };
 
-    const totalTransactions = transactions.length;
-    const totalDebt = transactions.reduce((sum, t) => sum + t.remainingDebt, 0);
-    const totalSpent = transactions.reduce((sum, t) => sum + t.totalAmount, 0);
+    const totalTransactions = transactions?.length || 0;
+    const totalDebt = transactions?.reduce((sum, t) => sum + (t.remainingDebt || 0), 0) || 0;
+    const totalSpent = transactions?.reduce((sum, t) => sum + (t.totalAmount || 0), 0) || 0;
     
     return { totalTransactions, totalDebt, totalSpent };
   };

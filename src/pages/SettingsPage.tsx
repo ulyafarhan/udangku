@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useSettings } from "@/hooks/useSettings";
+import { useToast } from "@/hooks/use-toast";
 
 const settingsSchema = z.object({
   defaultShrinkagePercentage: z.coerce.number().nonnegative("Penyusutan tidak boleh negatif."),
@@ -15,6 +16,7 @@ const settingsSchema = z.object({
 
 export function SettingsPage() {
   const { settings, updateSettings } = useSettings();
+  const { toast } = useToast();
   
   const form = useForm<z.infer<typeof settingsSchema>>({
     resolver: zodResolver(settingsSchema),
@@ -26,10 +28,20 @@ export function SettingsPage() {
     }
   }, [settings, form]);
 
-  const handleSubmit = (values: z.infer<typeof settingsSchema>) => {
-    updateSettings(values);
-    // Di aplikasi nyata, tambahkan notifikasi "toast" di sini untuk memberitahu user bahwa data telah disimpan
-    alert("Pengaturan berhasil disimpan!");
+  const handleSubmit = async (values: z.infer<typeof settingsSchema>) => {
+    try {
+      await updateSettings(values);
+      toast({ 
+          title: "Pengaturan Disimpan",
+          description: "Nilai default telah berhasil diperbarui.",
+      });
+    } catch (error) {
+      toast({ 
+          title: "Error",
+          description: "Gagal menyimpan pengaturan: " + (error as Error).message,
+          variant: "destructive",
+      });
+    }
   };
 
   return (

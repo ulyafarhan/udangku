@@ -15,6 +15,7 @@ export interface StockEntry {
   netWeight: number;
   totalCost: number;
   shrinkagePercentage: number;
+  createdAt: string;
 }
 
 export interface Transaction {

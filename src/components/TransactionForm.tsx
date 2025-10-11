@@ -26,23 +26,29 @@ const transactionSchema = z.object({
   quantity: z.coerce.number().positive("Jumlah harus lebih dari 0."),
   pricePerKg: z.coerce.number().positive("Harga harus lebih dari 0."),
   paymentMethod: z.enum(["tunai", "utang", "cicil"]),
-  paidAmount: z.coerce.number().nonnegative("Jumlah bayar tidak boleh negatif.").optional()
-    .refine((val, ctx) => {
-      const paymentMethod = ctx.parent.paymentMethod;
-      if (paymentMethod !== 'tunai' && (val === undefined || val === null)) {
-        return false;
-      }
-      return true;
-    }, { message: "Jumlah bayar harus diisi untuk metode utang atau cicil" })
-    .refine((val, ctx) => {
-      const quantity = ctx.parent.quantity || 0;
-      const pricePerKg = ctx.parent.pricePerKg || 0;
-      const totalAmount = quantity * pricePerKg;
-      if (val !== undefined && val > totalAmount && totalAmount > 0) {
-        return false;
-      }
-      return true;
-    }, { message: "Jumlah bayar tidak boleh lebih dari total harga" }),
+  paidAmount: z.coerce.number().nonnegative("Jumlah bayar tidak boleh negatif.").optional(),
+}).superRefine((data, ctx) => {
+  // Validation 1: paidAmount required for 'utang' or 'cicil'
+  if (data.paymentMethod !== 'tunai' && (data.paidAmount === undefined || data.paidAmount === null)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Jumlah bayar harus diisi untuk metode utang atau cicil",
+      path: ['paidAmount'],
+    });
+  }
+
+  // Validation 2: paidAmount not more than totalAmount
+  const quantity = data.quantity || 0;
+  const pricePerKg = data.pricePerKg || 0;
+  const totalAmount = quantity * pricePerKg;
+
+  if (data.paidAmount !== undefined && data.paidAmount > totalAmount && totalAmount > 0) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Jumlah bayar tidak boleh lebih dari total harga",
+      path: ['paidAmount'],
+    });
+  }
 });
 
 export const TransactionForm = ({ onSuccess }: { onSuccess: () => void; }) => {

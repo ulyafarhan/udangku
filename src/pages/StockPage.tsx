@@ -52,9 +52,9 @@ const StockForm = ({ entry, onSuccess }: { entry?: StockEntry; onSuccess: () => 
   const handleSubmit = async (values: z.infer<typeof stockSchema>) => {
     const data = { ...values, date: format(values.date, "yyyy-MM-dd") };
     if (entry?.id) {
-      await updateStockEntry(entry.id, data);
+      await updateStockEntry(entry.id, { ...data, createdAt: entry.createdAt });
     } else {
-      await addStockEntry(data);
+      await addStockEntry({ ...data, createdAt: new Date().toISOString() });
     }
     onSuccess();
   };

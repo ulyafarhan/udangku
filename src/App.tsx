@@ -1,15 +1,15 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Navigation } from "@/components/Navigation";
-import { OfflineNotification } from "@/components/OfflineNotification";
-import { DashboardPage } from "@/pages/DashboardPage";
-import { TransactionPage } from "@/pages/TransactionPage";
-import { StockPage } from "@/pages/StockPage";
-import { CustomerPage } from "@/pages/CustomerPage";
-import { ReportsPage } from "@/pages/ReportsPage";
-import { SettingsPage } from "@/pages/SettingsPage";
-import { useState, useEffect } from "react";
-import { LoadingScreen } from "@/components/LoadingSpinner";
+import { OfflineNotification } from "./components/OfflineNotification";
+import { DashboardPage } from "./pages/DashboardPage";
+import { TransactionPage } from "./pages/TransactionPage";
+import { StockPage } from "./pages/StockPage";
+import { CustomerPage } from "./pages/CustomerPage";
+import { ReportsPage } from "./pages/ReportsPage";
+import { SettingsPage } from "./pages/SettingsPage";
+import { useEffect, useState } from "react";
+import { LoadingScreen } from "./components/LoadingSpinner";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);

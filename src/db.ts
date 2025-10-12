@@ -44,6 +44,26 @@ export class UdangKuDB extends Dexie {
       debts: '++id, customerId, transactionId, status, dueDate',
       debtPayments: '++id, debtId, paymentDate',
     });
+
+    // Version 4: Add indexes and updatedAt to stock and costs
+    this.version(4).stores({
+      stockEntries: '++id, date, supplierName, createdAt, updatedAt',
+      operationalCosts: '++id, date, category, createdAt, updatedAt',
+    }).upgrade(tx => {
+      const now = new Date().toISOString();
+      // Add 'updatedAt' to existing stock entries
+      tx.table('stockEntries').toCollection().modify(entry => {
+        if (entry.updatedAt === undefined) {
+          entry.updatedAt = now;
+        }
+      });
+      // Add 'updatedAt' to existing operational costs
+      tx.table('operationalCosts').toCollection().modify(cost => {
+        if (cost.updatedAt === undefined) {
+          cost.updatedAt = now;
+        }
+      });
+    });
   }
 }
 

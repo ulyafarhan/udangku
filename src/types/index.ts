@@ -41,6 +41,7 @@ export interface OperationalCost {
   amount: number;
   category: string;
   createdAt: string;
+  updatedAt: string;
 }
 
 export interface Settings {

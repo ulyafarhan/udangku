@@ -45,6 +45,68 @@ export interface OperationalCost {
 
 export interface Settings {
   id?: number; // Usually only one entry with id: 1
+  
+  // Business Settings
+  businessName?: string;
+  businessAddress?: string;
+  businessPhone?: string;
+  businessEmail?: string;
+  
+  // Default Values
   defaultShrinkagePercentage: number;
   defaultDailyPrice: number;
+  
+  // Currency & Format
+  currency: string;
+  currencySymbol: string;
+  timezone: string;
+  dateFormat: string;
+  
+  // Notifications
+  enableNotifications: boolean;
+  enableDebtReminders: boolean;
+  debtReminderDays: number;
+  
+  // Auto Backup
+  enableAutoBackup: boolean;
+  backupFrequency: 'daily' | 'weekly' | 'monthly';
+  
+  // Theme & Display
+  theme: 'light' | 'dark' | 'auto';
+  language: string;
+  itemsPerPage: number;
+  
+  // Working Hours
+  workingHoursStart: string;
+  workingHoursEnd: string;
+  workingDays: string[];
+  
+  // Debt Settings
+  defaultDebtDueDays: number;
+  enableAutoDebtReminders: boolean;
+  
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface Debt {
+  id?: number;
+  customerId: number;
+  customerName: string;
+  transactionId: number;
+  originalAmount: number;
+  remainingAmount: number;
+  dueDate: string;
+  status: 'pending' | 'partial' | 'paid';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface DebtPayment {
+  id?: number;
+  debtId: number;
+  amount: number;
+  paymentDate: string;
+  notes?: string;
+  createdAt: string;
 }

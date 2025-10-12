@@ -31,13 +31,14 @@ export function OfflineNotification() {
 
   return (
     <div className={cn(
-      "fixed top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg transition-all duration-300",
+      "fixed top-20 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 rounded-lg shadow-lg transition-all duration-300",
+      "animate-in slide-in-from-top duration-300",
       isOnline 
         ? "bg-green-500 text-white" 
         : "bg-red-500 text-white"
     )}>
-      <WifiOff className="w-4 h-4" />
-      <span className="text-sm font-medium">
+      <WifiOff className="w-4 h-4 flex-shrink-0" />
+      <span className="text-sm font-medium whitespace-nowrap">
         {isOnline ? "Koneksi tersambung kembali" : "Tidak ada koneksi internet"}
       </span>
     </div>

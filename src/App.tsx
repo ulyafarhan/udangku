@@ -1,6 +1,5 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
-import { Navigation } from "@/components/Navigation";
 import { OfflineNotification } from "./components/OfflineNotification";
 import { DashboardPage } from "./pages/DashboardPage";
 import { TransactionPage } from "./pages/TransactionPage";
@@ -8,6 +7,8 @@ import { StockPage } from "./pages/StockPage";
 import { CustomerPage } from "./pages/CustomerPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { DebtPage } from "./pages/DebtPage";
+import { AppLayout } from "./components/Layout/AppLayout";
 import { useEffect, useState } from "react";
 import { LoadingScreen } from "./components/LoadingSpinner";
 
@@ -29,19 +30,23 @@ function App() {
 
   return (
     <HashRouter>
-      <div className="min-h-screen bg-background pb-20">
+      <div className="min-h-screen">
         <OfflineNotification />
-        <main className="container mx-auto px-4 py-6 max-w-7xl">
-          <Routes>
-            <Route path="/" element={<DashboardPage />} />
-            <Route path="/transactions" element={<TransactionPage />} />
-            <Route path="/stock" element={<StockPage />} />
-            <Route path="/customers" element={<CustomerPage />} />
-            <Route path="/reports" element={<ReportsPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Routes>
-        </main>
-        <Navigation />
+        <Routes>
+          <Route path="/*" element={
+            <AppLayout>
+              <Routes>
+                <Route path="/" element={<DashboardPage />} />
+                <Route path="/transactions" element={<TransactionPage />} />
+                <Route path="/stock" element={<StockPage />} />
+                <Route path="/customers" element={<CustomerPage />} />
+                <Route path="/debt" element={<DebtPage />} />
+                <Route path="/reports" element={<ReportsPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+              </Routes>
+            </AppLayout>
+          } />
+        </Routes>
         <Toaster />
       </div>
     </HashRouter>

@@ -142,67 +142,122 @@ export function StockPage() {
   
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h2 className="text-2xl font-bold text-foreground">Stok & Biaya</h2>
-        <div className="flex gap-2">
-          <Button onClick={() => setDialogOpen({ type: 'stock' })}><Plus className="mr-2 h-4 w-4" /> Udang Masuk</Button>
-          <Button onClick={() => setDialogOpen({ type: 'cost' })} variant="outline"><Plus className="mr-2 h-4 w-4" /> Catat Biaya</Button>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+        <div className="min-w-0 flex-1">
+          <h2 className="text-xl sm:text-2xl font-bold text-foreground truncate">Stok & Biaya</h2>
+          <p className="text-sm text-muted-foreground mt-1">Kelola stok udang dan biaya operasional</p>
+        </div>
+        <div className="flex gap-2 flex-shrink-0">
+          <Button onClick={() => setDialogOpen({ type: 'stock' })} size="sm" className="text-xs sm:text-sm">
+            <Plus className="mr-1 sm:mr-2 h-3 h-3 sm:h-4 w-3 sm:w-4" /> 
+            <span className="hidden sm:inline">Udang Masuk</span>
+            <span className="sm:hidden">Stok</span>
+          </Button>
+          <Button onClick={() => setDialogOpen({ type: 'cost' })} variant="outline" size="sm" className="text-xs sm:text-sm">
+            <Plus className="mr-1 sm:mr-2 h-3 h-3 sm:h-4 w-3 sm:w-4" /> 
+            <span className="hidden sm:inline">Catat Biaya</span>
+            <span className="sm:hidden">Biaya</span>
+          </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader><CardTitle>Riwayat Stok Masuk</CardTitle></CardHeader>
-          <CardContent className="space-y-2">
-            {stockEntries?.length === 0 ? <p className="text-sm text-muted-foreground text-center py-4">Belum ada stok masuk</p> : 
-              stockEntries?.map(entry => (
-                <div key={entry.id} className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50">
-                   <div>
-                    <p className="font-medium">{entry.supplierName}</p>
-                    <p className="text-sm text-muted-foreground">{entry.date} • {entry.grossWeight} kg → {entry.netWeight.toFixed(1)} kg</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-right">
-                      <p className="font-semibold">{formatCurrency(entry.totalCost)}</p>
-                      <p className="text-sm text-muted-foreground">@{formatCurrency(entry.buyPrice)}/kg</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <Card className="bg-white dark:bg-slate-800">
+          <CardHeader className="pb-3 px-4 sm:px-6">
+            <CardTitle className="text-base sm:text-lg">Riwayat Stok Masuk</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 p-0">
+            {stockEntries?.length === 0 ? (
+              <div className="text-center py-8 px-4">
+                <Package className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">Belum ada stok masuk</p>
+                <p className="text-xs text-muted-foreground mt-1">Tambahkan stok udang untuk memulai</p>
+              </div>
+            ) : (
+              <div className="max-h-[400px] overflow-y-auto">
+                {stockEntries?.map(entry => (
+                  <div key={entry.id} className="flex justify-between items-center p-3 sm:p-4 mx-2 sm:mx-4 mb-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-sm sm:text-base truncate">{entry.supplierName}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
+                        {entry.date} • {entry.grossWeight}kg → {entry.netWeight.toFixed(1)}kg
+                      </p>
                     </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setDialogOpen({ type: 'stock', data: entry })}> <Edit className="mr-2 h-4 w-4" />Ubah</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => entry?.id && setAlertOpen({ type: 'stock', id: entry.id })} className="text-destructive"><Trash2 className="mr-2 h-4 w-4" />Hapus</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="text-right">
+                        <p className="font-semibold text-sm sm:text-base">{formatCurrency(entry.totalCost)}</p>
+                        <p className="text-xs text-muted-foreground">@{formatCurrency(entry.buyPrice)}/kg</p>
+                      </div>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => setDialogOpen({ type: 'stock', data: entry })}>
+                            <Edit className="mr-2 h-4 w-4" />Ubah
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => entry?.id && setAlertOpen({ type: 'stock', id: entry.id })} 
+                            className="text-destructive"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />Hapus
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
-                </div>
-              ))
-            }
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader><CardTitle>Riwayat Biaya Operasional</CardTitle></CardHeader>
-          <CardContent className="space-y-2">
-            {costs?.length === 0 ? <p className="text-sm text-muted-foreground text-center py-4">Belum ada biaya</p> : 
-              costs?.map(cost => (
-                <div key={cost.id} className="flex justify-between items-center p-2 rounded-lg hover:bg-muted/50">
-                  <div>
-                    <p className="font-medium">{cost.description}</p>
-                    <p className="text-sm text-muted-foreground">{cost.date} • {cost.category}</p>
+        <Card className="bg-white dark:bg-slate-800">
+          <CardHeader className="pb-3 px-4 sm:px-6">
+            <CardTitle className="text-base sm:text-lg">Riwayat Biaya Operasional</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 p-0">
+            {costs?.length === 0 ? (
+              <div className="text-center py-8 px-4">
+                <CreditCard className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">Belum ada biaya</p>
+                <p className="text-xs text-muted-foreground mt-1">Catat biaya operasional untuk memulai</p>
+              </div>
+            ) : (
+              <div className="max-h-[400px] overflow-y-auto">
+                {costs?.map(cost => (
+                  <div key={cost.id} className="flex justify-between items-center p-3 sm:p-4 mx-2 sm:mx-4 mb-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-medium text-sm sm:text-base truncate">{cost.description}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{cost.date} • {cost.category}</p>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <p className="font-semibold text-sm sm:text-base">{formatCurrency(cost.amount)}</p>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => setDialogOpen({ type: 'cost', data: cost })}>
+                            <Edit className="mr-2 h-4 w-4" />Ubah
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => cost?.id && setAlertOpen({ type: 'cost', id: cost.id })} 
+                            className="text-destructive"
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />Hapus
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold">{formatCurrency(cost.amount)}</p>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="h-8 w-8"><MoreVertical className="h-4 w-4" /></Button></DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => setDialogOpen({ type: 'cost', data: cost })}><Edit className="mr-2 h-4 w-4" />Ubah</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => cost?.id && setAlertOpen({ type: 'cost', id: cost.id })} className="text-destructive"><Trash2 className="mr-2 h-4 w-4" />Hapus</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              ))
-            }
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
